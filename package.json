@@ -1,6 +1,6 @@
 {
   "name": "stanc3",
-  "version": "2.30.0",
+  "version": "2.37.0",
   "description": "Module wrapper around the Javascript build of the stanc3 compiler",
   "license": "BSD-3-Clause",
   "author": "Brian Ward <bward@flatironinstitute.org>",
@@ -28,6 +28,7 @@
     "dev": "tsup --watch",
     "format": "prettier . --write",
     "prepare": "curl -L -o src/stanc.js \"https://github.com/stan-dev/stanc3/releases/download/v$npm_package_version/stanc.js\"",
+    "prepack": "npm install && npm run build",
     "attw": "attw --pack ."
   },
   "prettier": {
