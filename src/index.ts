@@ -1,3 +1,5 @@
+import rawStancJS from "./stanc.js?raw";
+
 export type StancReturn =
   | { errors: undefined; result: string; warnings?: string[] }
   | { errors: string[]; result: undefined; warnings?: string[] };
@@ -9,13 +11,26 @@ type StancFunction = (
   includes?: Record<string, string>,
 ) => StancReturn;
 
-const stancjs = require("./stanc.js");
+// stanc.js code is not a module, so most nice options for loading are unavailable
+eval(rawStancJS);
 
-const stanc: StancFunction = stancjs.stanc;
-const dump_stan_math_distributions: () => string =
-  stancjs.dump_stan_math_distributions;
-const dump_stan_math_signatures: () => string =
-  stancjs.dump_stan_math_signatures;
+let stanc: StancFunction;
+let dump_stan_math_distributions: () => string;
+let dump_stan_math_signatures: () => string;
+
+// stanc.js also detects if it is running under node, which makes loading even more annoying
+if (typeof module !== "undefined") {
+  // node
+  stanc = module.exports.stanc;
+  dump_stan_math_distributions = module.exports.dump_stan_math_distributions;
+  dump_stan_math_signatures = module.exports.dump_stan_math_signatures;
+} else {
+  // browser
+  stanc = (globalThis as any).stanc;
+  dump_stan_math_distributions = (globalThis as any)
+    .dump_stan_math_distributions;
+  dump_stan_math_signatures = (globalThis as any).dump_stan_math_signatures;
+}
 
 const stanc_version = stanc("", "", ["version"]).result;
 

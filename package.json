@@ -30,29 +30,20 @@
     "prepare": "curl -L -o src/stanc.js \"https://github.com/stan-dev/stanc3/releases/download/v$npm_package_version/stanc.js\"",
     "attw": "attw --pack ."
   },
-  "tsup": {
-    "entry": [
-      "src/index.ts",
-      "src/util.ts"
-    ],
-    "format": [
-      "cjs",
-      "esm"
-    ],
-    "dts": true,
-    "splitting": false,
-    "sourcemap": true,
-    "clean": true
-  },
   "prettier": {
     "tabWidth": 2,
     "semi": true,
     "arrowParens": "avoid"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.15.3",
     "@types/node": "^24.5.2",
+    "esbuild-raw-plugin": "^0.3.1",
     "prettier": "^3.3.1",
     "tsup": "^8.4.0",
     "typescript": "^5.6.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
