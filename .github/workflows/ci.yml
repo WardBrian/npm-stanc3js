@@ -10,9 +10,8 @@ on:
         required: false
         default: ""
 jobs:
-  build:
+  version-check:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v5
       - name: Get current stanc3 version
@@ -39,45 +38,50 @@ jobs:
             echo "Version does not match, proceeding with build and publish."
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
+    outputs:
+      skip: ${{ steps.check_version.outputs.skip }}
+      version: ${{ steps.get_version.outputs.version }}
 
+  build-and-publish:
+    needs: version-check
+    if: needs.version-check.outputs.skip == 'false'
+    runs-on: ubuntu-latest
+    environment: publishing
+    permissions:
+      id-token: write
+      contents: write
+    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v3
-        if: steps.check_version.outputs.skip == 'false'
         with:
           node-version: "20"
           cache: "npm"
 
       - name: Set-up git user
-        if: steps.check_version.outputs.skip == 'false'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Update version
-        run: npm version ${{ steps.get_version.outputs.version }}
+        run: npm version ${{ needs.version-check.outputs.version }}
 
       - name: Install dependencies
         run: npm install
-        if: steps.check_version.outputs.skip == 'false'
 
       - name: Build package
         run: npm run build && npm pack
-        if: steps.check_version.outputs.skip == 'false'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
-        if: steps.check_version.outputs.skip == 'false'
         with:
           path: "*.tgz"
           name: stanc3js-package
 
       - name: Publish package
         run: npm publish --access public
-        if: steps.check_version.outputs.skip == 'false'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push changes
-        if: steps.check_version.outputs.skip == 'false'
         run: |
           git push --tags origin main
