@@ -65,7 +65,7 @@ jobs:
         if: steps.check_version.outputs.skip == 'false'
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: steps.check_version.outputs.skip == 'false'
         with:
           path: "*.tgz"
@@ -76,3 +76,8 @@ jobs:
         if: steps.check_version.outputs.skip == 'false'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push changes
+        if: steps.check_version.outputs.skip == 'false'
+        run: |
+          git push --tags origin main
