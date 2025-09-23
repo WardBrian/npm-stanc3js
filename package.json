@@ -1,6 +1,6 @@
 {
   "name": "stanc3",
-  "version": "2.37.0",
+  "version": "2.30.0",
   "description": "Module wrapper around the Javascript build of the stanc3 compiler",
   "license": "BSD-3-Clause",
   "author": "Brian Ward <bward@flatironinstitute.org>",
