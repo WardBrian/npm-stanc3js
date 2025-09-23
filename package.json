@@ -1,0 +1,58 @@
+{
+  "name": "stanc3",
+  "version": "2.37.0",
+  "description": "Module wrapper around the Javascript build of the stanc3 compiler",
+  "license": "BSD-3-Clause",
+  "author": "Brian Ward <bward@flatironinstitute.org>",
+  "repository": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "prettier . --write",
+    "prepare": "curl -L -o src/stanc.js \"https://github.com/stan-dev/stanc3/releases/download/v$npm_package_version/stanc.js\"",
+    "attw": "attw --pack ."
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts",
+      "src/util.ts"
+    ],
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "dts": true,
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": true,
+    "arrowParens": "avoid"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "prettier": "^3.3.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.6.3"
+  }
+}
