@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: publishing
     permissions:
-      id-token: write
+      id-token: write # OIDC
       contents: write
     steps:
       - uses: actions/checkout@v5
@@ -80,8 +80,6 @@ jobs:
 
       - name: Publish package
         run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push changes
         run: |

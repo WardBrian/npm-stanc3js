@@ -4,7 +4,7 @@
   "description": "Module wrapper around the Javascript build of the stanc3 compiler",
   "license": "BSD-3-Clause",
   "author": "Brian Ward <bward@flatironinstitute.org>",
-  "repository": "",
+  "repository": "https://github.com/WardBrian/npm-stanc3js",
   "type": "module",
   "exports": {
     ".": {
