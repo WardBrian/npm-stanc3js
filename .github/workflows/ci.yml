@@ -17,6 +17,7 @@ jobs:
       - name: Get current stanc3 version
         id: get_version
         run: |
+          set -Eeuo pipefail
           if [ -z "${{ github.event.inputs.stanc-version }}" ]; then
             VERSION=$(curl -s https://api.github.com/repos/stan-dev/stanc3/releases | jq -r '.[].tag_name' | grep -vE 'nightly|rc' | head -n 1 | cut -c 2-)
           else
