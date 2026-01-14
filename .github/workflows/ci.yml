@@ -54,9 +54,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
           cache: "npm"
 
       - name: Set-up git user
@@ -65,7 +66,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Update version
-        run: npm version ${{ needs.version-check.outputs.version }}
+        run: npm install -g npm@latest && npm version ${{ needs.version-check.outputs.version }}
 
       - name: Install dependencies
         run: npm install
