@@ -12,7 +12,7 @@ type StancFunction = (
 ) => StancReturn;
 
 // stanc.js code is not a module, so most nice options for loading are unavailable
-eval(rawStancJS);
+new Function(rawStancJS)();
 
 let stanc: StancFunction;
 let dump_stan_math_distributions: () => string;
