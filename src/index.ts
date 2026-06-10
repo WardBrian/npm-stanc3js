@@ -19,13 +19,16 @@ let dump_stan_math_distributions: () => string;
 let dump_stan_math_signatures: () => string;
 
 // stanc.js also detects if it is running under node, which makes loading even more annoying
-if (typeof module !== "undefined") {
+
+if (typeof module === "object" && module.exports) {
   // node
-  stanc = module.exports.stanc;
-  dump_stan_math_distributions = module.exports.dump_stan_math_distributions;
-  dump_stan_math_signatures = module.exports.dump_stan_math_signatures;
-} else {
-  // browser
+  stanc = module?.exports?.stanc;
+  dump_stan_math_distributions = module?.exports?.dump_stan_math_distributions;
+  dump_stan_math_signatures = module?.exports?.dump_stan_math_signatures;
+}
+// @ts-expect-error
+if (typeof stanc === "undefined") {
+  // fallback/browser
   stanc = (globalThis as any).stanc;
   dump_stan_math_distributions = (globalThis as any)
     .dump_stan_math_distributions;
