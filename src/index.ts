@@ -20,18 +20,20 @@ let dump_stan_math_distributions: () => string;
 let dump_stan_math_signatures: () => string;
 
 // the newer entrypoints have much more specific types
+export type Severity = "help" | "error" | "warning" | "note" | "bug";
 export type Position = { line: number; column: number };
+export type Range = {
+  source?: string;
+  start: Position;
+  end: Position;
+};
 
 export type Diagnostic = {
-  severity: "help" | "error" | "warning" | "note" | "bug";
+  severity: Severity;
   message: string;
   error_code?: string;
   labels: {
-    range: {
-      source?: string;
-      start: Position;
-      end: Position;
-    };
+    range: Range;
     priority: "primary" | "secondary";
     message: string;
   }[];
